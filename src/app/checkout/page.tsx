@@ -17,10 +17,10 @@ import {
 import Grid from '@mui/material/Grid';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import AddressForm from './components/AddressForm';
-import PaymentForm from './components/PaymentForm';
-import Review from './components/Review';
-import OrderSummary from './components/OrderSummary';
+import AddressForm from '../../components/features/checkout/AddressForm';
+import PaymentForm from '../../components/features/checkout/PaymentForm';
+import Review from '../../components/features/checkout/Review';
+import OrderSummary from '../../components/features/checkout/OrderSummary';
 
 const steps = ['Personal Information', 'Payment Details', 'Review Order'];
 
