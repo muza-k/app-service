@@ -6,21 +6,24 @@ import { useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import HomeIcon from '@mui/icons-material/Home';
+import BusinessIcon from '@mui/icons-material/Business';
 
 const insuranceOptions = [
   {
-    title: 'Auto',
-    width: '33.3%',
+    title: '',
+    icon: <DirectionsCarIcon sx={{ fontSize: 80 }} />, // Auto icon
     link: '/auto/vehicle-info',
   },
   {
-    title: 'Home',
-    width: '33.3%',
+    title: '',
+    icon: <HomeIcon sx={{ fontSize: 80 }} />, // Home icon
     link: '/home/property-info',
   },
   {
-    title: 'Small Business',
-    width: '33.3%',
+    title: '',
+    icon: <BusinessIcon sx={{ fontSize: 80 }} />, // Business icon
     link: '/business/home',
   },
 ];
@@ -33,6 +36,7 @@ const StyledButton = styled(ButtonBase)(({ theme }) => ({
   border: '1px solid #ddd',
   transition: 'transform 0.3s, box-shadow 0.3s',
   display: 'flex',
+  flexDirection: 'column', // Stack icon and text vertically
   alignItems: 'center',
   justifyContent: 'center',
   '&:hover, &.Mui-focusVisible': {
@@ -58,15 +62,16 @@ export default function Landing() {
         Get the best coverage for your Auto, Home, and Business.
       </Typography>
 
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', minWidth: 300, width: '100%' }}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', width: '100%' }}>
         {insuranceOptions.map((option) => (
           <StyledButton
             key={option.title}
             focusRipple
             onClick={() => router.push(option.link)}
-            style={{ width: option.width }}
+            sx={{ width: { xs: '100%', sm: '33.3%' }, p: 3 }}
           >
-            <Typography variant="h3" color="text.primary">
+            {option.icon} {/* Renders the appropriate icon */}
+            <Typography variant="h6" color="text.primary" sx={{ mt: 2 }}>
               {option.title}
             </Typography>
           </StyledButton>
