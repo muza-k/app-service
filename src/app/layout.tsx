@@ -4,8 +4,8 @@ import { PropsWithChildren } from 'react';
 import { CssBaseline } from '@mui/material';
 import Layout from '@/components/ui/Layout';
 
-const title = 'Next.js Subscription Starter';
-const description = 'Brought to you by Vercel, Stripe, and Supabase.';
+const title = 'DDI';
+const description = 'Deloitte Digital Insurance';
 
 export const metadata: Metadata = {
   title: title,

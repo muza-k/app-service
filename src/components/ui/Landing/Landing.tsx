@@ -9,17 +9,17 @@ import Typography from '@mui/material/Typography';
 
 const insuranceOptions = [
   {
-    title: 'Auto Insurance',
+    title: 'Auto',
     width: '33.3%',
     link: '/auto/vehicle-info',
   },
   {
-    title: 'Home Insurance',
+    title: 'Home',
     width: '33.3%',
     link: '/home/property-info',
   },
   {
-    title: 'Small Business Insurance',
+    title: 'Small Business',
     width: '33.3%',
     link: '/business/home',
   },
@@ -66,7 +66,7 @@ export default function Landing() {
             onClick={() => router.push(option.link)}
             style={{ width: option.width }}
           >
-            <Typography variant="h5" color="text.primary">
+            <Typography variant="h3" color="text.primary">
               {option.title}
             </Typography>
           </StyledButton>
