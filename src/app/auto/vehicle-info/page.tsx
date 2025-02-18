@@ -16,6 +16,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
 import AutoStepper from "@/components/features/Stepper/AutoStepper";
+import VehicleSearch from "@/components/features/auto/VehicleSearch/VehicleSearch";
 
 interface AddressOptionType {
   description: string;
@@ -66,6 +67,16 @@ export default function VehicleInfoPage() {
   const [addressOptions, setAddressOptions] = useState<AddressOptionType[]>([]);
   const [inputMode, setInputMode] = useState("manual");
   const [progress, setProgress] = useState(0);
+  const [selectedVehicle, setSelectedVehicle] = useState({
+    year: "",
+    make: "",
+    model: "",
+  });
+
+  // Callback function to update state when vehicle is selected
+  const handleVehicleSelect = (vehicle) => {
+    setSelectedVehicle(vehicle);
+  };
 
   useEffect(() => {
     let completedSteps = 0;
@@ -184,6 +195,12 @@ export default function VehicleInfoPage() {
                 value={vin}
                 onChange={handleVinChange}
               />
+            </Grid>
+          )}
+
+          {inputMode === "manual" && (
+            <Grid item xs={12}>
+              <VehicleSearch onSelect={handleVehicleSelect} />
             </Grid>
           )}
 
