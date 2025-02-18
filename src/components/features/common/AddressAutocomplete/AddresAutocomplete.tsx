@@ -45,11 +45,26 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
     <Autocomplete
       freeSolo
       value={address}
-      onChange={(event, newValue) => onAddressChange(newValue)}
+      onChange={(event, newValue) => {
+        if (typeof newValue === 'string') {
+          onAddressChange({ description: newValue });
+        } else {
+          onAddressChange(newValue);
+        }
+      }}
       onInputChange={handleAddressInputChange}
       options={addressOptions}
-      getOptionLabel={(option) => option.description}
-      renderOption={(props, option) => <li {...props}>{option.description}</li>}
+      getOptionLabel={(option: AddressOptionType | string) => 
+        typeof option === 'string' ? option : option.description
+      }
+      renderOption={(props, option: AddressOptionType) => {
+        const { key, ...restProps } = props; // Extract key separately
+        return (
+          <li key={key} {...restProps}>
+            {option.description}
+          </li>
+        );
+      }}
       renderInput={(params) => (
         <TextField {...params} label="Your Address" fullWidth />
       )}

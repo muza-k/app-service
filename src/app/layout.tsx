@@ -1,15 +1,15 @@
+import { Metadata } from "next";
+import { PropsWithChildren } from "react";
+import { CssBaseline } from "@mui/material";
+import Layout from "@/components/ui/Layout";
+import { AppProvider } from "@/context/AppContext"; // Import AppProvider
 
-import { Metadata } from 'next';
-import { PropsWithChildren } from 'react';
-import { CssBaseline } from '@mui/material';
-import Layout from '@/components/ui/Layout';
-
-const title = 'DDI';
-const description = 'Deloitte Digital Insurance';
+const title = "DDI";
+const description = "Deloitte Digital Insurance";
 
 export const metadata: Metadata = {
   title: title,
-  description: description
+  description: description,
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
@@ -21,7 +21,9 @@ export default function RootLayout({ children }: PropsWithChildren) {
       </head>
       <body>
         <CssBaseline /> {/* Ensures consistent Material UI styling */}
-        <Layout>{children}</Layout>
+        <AppProvider> {/* Wrap the entire application */}
+          <Layout>{children}</Layout>
+        </AppProvider>
       </body>
     </html>
   );

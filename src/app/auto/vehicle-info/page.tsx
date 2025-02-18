@@ -14,20 +14,26 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import AutoStepper from "@/components/features/Stepper/AutoStepper";
 import VehicleSearch from "@/components/features/auto/VehicleSearch/VehicleSearch";
 import AddressAutocomplete from "@/components/features/common/AddressAutocomplete/AddresAutocomplete";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+import { useAppContext } from "@/context/AppContext"; // Adjust path as needed
 
 interface AddressOptionType {
   description: string;
 }
+
+interface CoverageStartDateFieldProps {
+  coverageStartDate: Dayjs | null;
+  handleCoverageStartDateChange: (date: Dayjs | null) => void;
+}
+
 const CoverageStartDateField = ({
   coverageStartDate,
   handleCoverageStartDateChange,
-}) => (
+}: CoverageStartDateFieldProps) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
     <Grid container sx={{ width: "100%" }}>
       <DatePicker
@@ -41,22 +47,17 @@ const CoverageStartDateField = ({
 );
 
 export default function VehicleInfoPage() {
-  const [vin, setVin] = useState("");
-  const [address, setAddress] = useState<AddressOptionType | null>(null);
-  const [coverageStartDate, setCoverageStartDate] = useState<Dayjs | null>(
-    null
-  );
-  const [addressOptions, setAddressOptions] = useState<AddressOptionType[]>([]);
-  const [inputMode, setInputMode] = useState("manual");
-  const [progress, setProgress] = useState(0);
-  const [selectedVehicle, setSelectedVehicle] = useState({
-    year: "",
-    make: "",
-    model: "",
-  });
+  const {
+    appState: { selectedVehicle, vin, inputMode, address, coverageStartDate, progress },
+    setSelectedVehicle,
+    setVin,
+    setInputMode,
+    setAddress,
+    setCoverageStartDate,
+  } = useAppContext();
 
   // Callback function to update state when vehicle is selected
-  const handleVehicleSelect = (vehicle) => {
+  const handleVehicleSelect = (vehicle: { year: string; make: string; model: string }) => {
     setSelectedVehicle(vehicle);
   };
 
@@ -65,10 +66,6 @@ export default function VehicleInfoPage() {
     if (inputMode === "vin" && vin.trim() !== "") completedSteps++;
     if (address) completedSteps++;
     if (coverageStartDate) completedSteps++;
-
-    const totalSteps = 4; // Total number of required fields
-    const progressPercentage = ((completedSteps + 1) / totalSteps) * 100;
-    setProgress(progressPercentage);
   }, [vin, address, coverageStartDate, inputMode]);
 
   const handleVinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,6 +96,13 @@ export default function VehicleInfoPage() {
       "Coverage Start Date:",
       coverageStartDate?.format("YYYY-MM-DD")
     );
+    console.log("App State: ", {
+      selectedVehicle,
+      vin,
+      inputMode,
+      address,
+      coverageStartDate,
+    });
   };
 
   return (
