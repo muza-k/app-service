@@ -7,6 +7,8 @@ interface VehicleSearchProps {
   onSelect: (vehicle: { year: string; make: string; model: string }) => void;
 }
 
+const VEHICLE_SEARCH_API = 'http://localhost:8094/api/vehicle/search';
+
 export default function VehicleSearch({ onSelect }: VehicleSearchProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,7 +29,7 @@ export default function VehicleSearch({ onSelect }: VehicleSearchProps) {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8094/api/vehicle/search/${query}`
+        `${VEHICLE_SEARCH_API}/${query}`
       );
       const data = await response.json();
       if (data.result) {

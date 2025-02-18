@@ -17,44 +17,26 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
 import AutoStepper from "@/components/features/Stepper/AutoStepper";
 import VehicleSearch from "@/components/features/auto/VehicleSearch/VehicleSearch";
+import AddressAutocomplete from "@/components/features/common/AddressAutocomplete/AddresAutocomplete";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 
 interface AddressOptionType {
   description: string;
 }
-
-const ADDRESS_AUTOCOMPLETE_API = process.env.ADDRESS_AUTOCOMPLETE_API;
-
-const AddressField = ({
-  address,
-  addressOptions,
-  handleAddressChange,
-  handleAddressInputChange,
-}) => (
-  <Autocomplete
-    freeSolo
-    value={address}
-    onChange={handleAddressChange}
-    onInputChange={handleAddressInputChange}
-    options={addressOptions}
-    getOptionLabel={(option) => option.description}
-    renderOption={(props, option) => <li {...props}>{option.description}</li>}
-    renderInput={(params) => (
-      <TextField {...params} label="Your Address" fullWidth />
-    )}
-  />
-);
-
 const CoverageStartDateField = ({
   coverageStartDate,
   handleCoverageStartDateChange,
 }) => (
   <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <DatePicker
-      label="Coverage Start Date"
-      value={coverageStartDate}
-      onChange={handleCoverageStartDateChange}
-      renderInput={(params) => <TextField {...params} fullWidth />}
-    />
+    <Grid container sx={{ width: "100%" }}>
+      <DatePicker
+        label="Coverage Start Date"
+        value={coverageStartDate}
+        onChange={handleCoverageStartDateChange}
+        slotProps={{ textField: { fullWidth: true } }} // Use new API for full width
+      />
+    </Grid>
   </LocalizationProvider>
 );
 
@@ -93,34 +75,6 @@ export default function VehicleInfoPage() {
     setVin(event.target.value);
   };
 
-  const handleAddressInputChange = async (
-    event: React.SyntheticEvent,
-    inputValue: string
-  ) => {
-    if (inputValue.length > 2) {
-      try {
-        const response = await fetch(
-          `${ADDRESS_AUTOCOMPLETE_API}?input=${inputValue}&types=address&components=country:ca`
-        );
-        const data = await response.json();
-        setAddressOptions(
-          data.predictions.map((prediction: any) => ({
-            description: prediction.description,
-          }))
-        );
-      } catch (error) {
-        console.error("Error fetching address options:", error);
-      }
-    }
-  };
-
-  const handleAddressChange = (
-    event: React.SyntheticEvent,
-    newValue: AddressOptionType | null
-  ) => {
-    setAddress(newValue);
-  };
-
   const handleCoverageStartDateChange = (newValue: Dayjs | null) => {
     setCoverageStartDate(newValue);
   };
@@ -132,6 +86,10 @@ export default function VehicleInfoPage() {
     if (newMode !== null) {
       setInputMode(newMode);
     }
+  };
+
+  const handleAddressChange = (newAddress: AddressOptionType | null) => {
+    setAddress(newAddress);
   };
 
   const handleSubmit = () => {
@@ -204,13 +162,11 @@ export default function VehicleInfoPage() {
             </Grid>
           )}
 
-          {/* Address Field */}
+          {/* Address Field - Now using AddressAutocomplete */}
           <Grid item xs={12}>
-            <AddressField
+            <AddressAutocomplete
               address={address}
-              addressOptions={addressOptions}
-              handleAddressChange={handleAddressChange}
-              handleAddressInputChange={handleAddressInputChange}
+              onAddressChange={handleAddressChange}
             />
           </Grid>
 
@@ -224,8 +180,15 @@ export default function VehicleInfoPage() {
 
           {/* Submit Button - Centered */}
           <Grid item xs={12} sx={{ display: "flex", justifyContent: "center" }}>
-            <Button variant="contained" color="primary" onClick={handleSubmit}>
-              Submit
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit}
+              size="large"
+              sx={{ py: 2, fontSize: "1rem"}}
+              endIcon={<ArrowForwardIcon />} // Adds the arrow icon at the end
+            >
+              Next
             </Button>
           </Grid>
         </Grid>
