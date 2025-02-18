@@ -19,7 +19,9 @@ import AutoStepper from "@/components/features/Stepper/AutoStepper";
 import VehicleSearch from "@/components/features/auto/VehicleSearch/VehicleSearch";
 import AddressAutocomplete from "@/components/features/common/AddressAutocomplete/AddresAutocomplete";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useAppContext } from "@/context/AppContext"; // Adjust path as needed
+import { useAppContext } from "@/context/AppContext"; 
+import { useRouter } from "next/navigation";
+
 
 interface AddressOptionType {
   description: string;
@@ -55,18 +57,12 @@ export default function VehicleInfoPage() {
     setAddress,
     setCoverageStartDate,
   } = useAppContext();
+  const router = useRouter();
 
   // Callback function to update state when vehicle is selected
   const handleVehicleSelect = (vehicle: { year: string; make: string; model: string }) => {
     setSelectedVehicle(vehicle);
   };
-
-  useEffect(() => {
-    let completedSteps = 0;
-    if (inputMode === "vin" && vin.trim() !== "") completedSteps++;
-    if (address) completedSteps++;
-    if (coverageStartDate) completedSteps++;
-  }, [vin, address, coverageStartDate, inputMode]);
 
   const handleVinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setVin(event.target.value);
@@ -103,6 +99,7 @@ export default function VehicleInfoPage() {
       address,
       coverageStartDate,
     });
+    router.push("/auto/driver-info");
   };
 
   return (
